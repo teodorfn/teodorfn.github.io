@@ -1,1 +1,0 @@
-function preload(i){$(i).each(function(){$("<img/>")[0].src=this})}preload(["img/twitter_filled.png","img/linked_in_filled.png","img/github_filled.png"]);
