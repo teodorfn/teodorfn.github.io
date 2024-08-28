@@ -12,19 +12,32 @@
             width: 100%;
             overflow: hidden;
             background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #message {
+            text-align: center;
+            font-size: 16px;
+            color: white;
         }
     </style>
 </head>
 <body>
 
+<div id="message">Please crank up your screen brightness to full!</div>
+
 <script>
     let isWhite = false;
+
     setInterval(() => {
         document.body.style.backgroundColor = isWhite ? 'black' : 'white';
+        document.getElementById('message').style.color = isWhite ? 'white' : 'black';
         isWhite = !isWhite;
-    }, 200);
+    }, 500);
 </script>
 
 </body>
 </html>
-
