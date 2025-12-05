@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sparat sedan snusstopp</title>
+    <title>Saved since quitting snus</title>
     <style>
         body {
             margin: 0;
@@ -80,18 +80,65 @@
         }
 
         .heart-rate-detail {
-            font-size: 1.2rem;
+            font-size: 0.75rem;
             opacity: 0.6;
             margin-top: 10px;
         }
 
-        @media (max-width: 768px) {
+        .heart-unit {
+            opacity: 0.8;
+            color: #ffffff;
+        }
+
+        .time-units {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .time-unit-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 1rem;
+            opacity: 0.7;
+            display: block;
+            margin-top: 5px;
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .time-units {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin-top: 200px;
+            }
+
             .ticker {
-                font-size: 4rem;
+                font-size: 2rem;
             }
 
             .unit {
-                font-size: 2rem;
+                font-size: 1rem;
             }
 
             .label {
@@ -114,19 +161,29 @@
                 font-size: rem;
             }
 
-            .heart-unit {
-                font-size: 3rem;
-                margin-left: 10px;
-                opacity: 0.8;
-                color: #ff4444;
+            .time-units {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                max-width: 300px;
+                margin-left: auto;
+                margin-right: auto;
             }
+
+            .time-value {
+                font-size: 1.2em;
+            }
+
+            .time-label {
+                font-size: 0.9rem;
+            }
+
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="label">Sparat sedan snusstopp</div>
+        <div class="label">Saved since July 20, 2025</div>
         <div>
             <span class="ticker" id="savings">0</span>
             <span class="unit">SEK</span>
@@ -134,10 +191,44 @@
         <hr>
         <div class="heart-rate">
             <span class="heart">❤️</span>
-            <span class="bpm-change" id="savedBeats">0</span><span class="heart-unit">hjärtslag</span>
+            <span class="bpm-change" id="savedBeats">0</span><span class="heart-unit">heartbeats</span>
         </div>
-        <div class="heart-rate-detail" id="heartDetail">(8 per minut, 0 minuter)</div>
-        <div class="start-date">Sedan 20 juli 2025</div>
+        <div class="heart-rate-detail" id="heartDetail">(-8 beats per minute)</div>
+
+        <div class="time-units">
+            <div class="time-unit-item">
+                <span class="time-value" id="seconds">0</span>
+                <span class="time-label">seconds since start</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="days">0</span>
+                <span class="time-label">days since start</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="weeks">0</span>
+                <span class="time-label">weeks since start</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="months">0</span>
+                <span class="time-label">months since start</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="yearPercent">0%</span>
+                <span class="time-label">of 2025 snus-free</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="dailyAverage">0</span>
+                <span class="time-label">SEK saved per day</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="snusWeight">0</span>
+                <span class="time-label">kg snus not consumed</span>
+            </div>
+            <div class="time-unit-item">
+                <span class="time-value" id="cansStack">0</span>
+                <span class="time-label">meter tower of cans avoided</span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -151,7 +242,7 @@
 
             const savedAmount = secondsElapsed * amountPerSecond;
 
-            const formattedAmount = savedAmount.toLocaleString('sv-SE', {
+            const formattedAmount = savedAmount.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
@@ -161,13 +252,62 @@
             const minutesElapsed = secondsElapsed / 60;
             const savedHeartbeats = Math.floor(minutesElapsed * 8);
 
-            const formattedBeats = savedHeartbeats.toLocaleString('sv-SE');
+            const formattedBeats = savedHeartbeats.toLocaleString('en-US');
 
             document.getElementById('savedBeats').textContent = formattedBeats;
 
-            const totalMinutes = Math.floor(minutesElapsed);
-            const formattedMinutes = totalMinutes.toLocaleString('sv-SE');
-            document.getElementById('heartDetail').textContent = `(8 per minut, ${formattedMinutes} minuter)`;
+            document.getElementById('seconds').textContent = secondsElapsed.toLocaleString('en-US');
+
+            const daysTotal = Math.floor(secondsElapsed / 86400);
+            document.getElementById('days').textContent = daysTotal.toLocaleString('en-US');
+
+            const weeksTotal = Math.floor(secondsElapsed / 604800);
+            document.getElementById('weeks').textContent = weeksTotal.toLocaleString('en-US');
+
+            // Calculate months more accurately
+            const monthsTotal = calculateMonthsDifference(startDate, now);
+            document.getElementById('months').textContent = monthsTotal.toLocaleString('en-US');
+
+            // Calculate percentage of 2025
+            const yearStart = new Date('2025-01-01');
+            const yearEnd = new Date('2025-12-31T23:59:59');
+            const totalYearMs = yearEnd - yearStart;
+            const elapsedYearMs = now - startDate;
+            const yearPercentage = Math.min(100, (elapsedYearMs / totalYearMs) * 100);
+            document.getElementById('yearPercent').textContent = yearPercentage.toFixed(1) + '%';
+
+            // Calculate daily average
+            const dailyAverage = daysTotal > 0 ? savedAmount / daysTotal : 0;
+            document.getElementById('dailyAverage').textContent = dailyAverage.toFixed(2);
+
+            // Calculate snus weight and environmental impact
+            // 1 can per day consumption rate
+            const cansPerDay = 1;
+            const totalCans = Math.floor(daysTotal * cansPerDay);
+            
+            // Calculate height of stacked cans
+            // Standard snus can is about 2cm (20mm) tall
+            const canHeightCm = 2;
+            const totalHeightCm = totalCans * canHeightCm;
+            const totalHeightMeters = totalHeightCm / 100;
+            document.getElementById('cansStack').textContent = totalHeightMeters.toFixed(1);
+
+            // Each can has 21 pouches at 0.8g each
+            const pouchesPerCan = 21;
+            const gramsPerPouch = 0.8;
+            const gramsPerCan = pouchesPerCan * gramsPerPouch; // 16.8g
+            const totalGrams = totalCans * gramsPerCan;
+            const totalKg = totalGrams / 1000;
+            document.getElementById('snusWeight').textContent = Math.round(totalKg).toLocaleString('en-US');
+        }
+
+        function calculateMonthsDifference(start, end) {
+            let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+            // Adjust if we haven't reached the day of the month yet
+            if (end.getDate() < start.getDate()) {
+                months--;
+            }
+            return months;
         }
 
         updateTicker();
