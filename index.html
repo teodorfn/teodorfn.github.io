@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sparade pengar sedan rökstopp</title>
+    <title>Sparade pengar</title>
     <style>
         body {
             margin: 0;
@@ -69,7 +69,7 @@
 
 <body>
     <div class="container">
-        <div class="label">Sparade pengar sedan snusstopp</div>
+        <div class="label">Sparade pengar sedan jag slutade snusa</div>
         <div>
             <span class="ticker" id="savings">0</span>
             <span class="unit">SEK</span>
@@ -78,31 +78,24 @@
     </div>
 
     <script>
-        // Startdatum: 20 juli 2025
         const startDate = new Date('2025-07-20T00:00:00');
 
-        // Belopp per sekund
         const amountPerSecond = 0.00046;
 
-        // Uppdatera ticker
         function updateTicker() {
             const now = new Date();
             const secondsElapsed = Math.floor((now - startDate) / 1000);
 
-            // Beräkna sparade pengar
             const savedAmount = secondsElapsed * amountPerSecond;
 
-            // Formatera beloppet med två decimaler och tusentalsavgränsare
             const formattedAmount = savedAmount.toLocaleString('sv-SE', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
 
-            // Uppdatera ticker
             document.getElementById('savings').textContent = formattedAmount;
         }
 
-        // Uppdatera omedelbart och sedan varje sekund
         updateTicker();
         setInterval(updateTicker, 1000);
     </script>
