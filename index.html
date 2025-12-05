@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sparade pengar</title>
+    <title>Sparat sedan snusstopp</title>
     <style>
         body {
             margin: 0;
@@ -42,9 +42,47 @@
         }
 
         .start-date {
-            font-size: 1.5rem;
-            margin-top: 20px;
+            font-size: 2rem;
+            margin-top: 50px;
             opacity: 0.6;
+        }
+
+        .heart-rate {
+            margin-top: 40px;
+            font-size: 2.5rem;
+            color: #ff4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .heart {
+            font-size: 3rem;
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .bpm-change {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .heart-rate-detail {
+            font-size: 1.2rem;
+            opacity: 0.6;
+            margin-top: 10px;
         }
 
         @media (max-width: 768px) {
@@ -63,17 +101,42 @@
             .start-date {
                 font-size: 1.2rem;
             }
+
+            .heart-rate {
+                font-size: 1.8rem;
+            }
+
+            .heart {
+                font-size: 2rem;
+            }
+
+            .heart-rate-detail {
+                font-size: rem;
+            }
+
+            .heart-unit {
+                font-size: 3rem;
+                margin-left: 10px;
+                opacity: 0.8;
+                color: #ff4444;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="label">Sparade pengar sedan jag slutade snusa</div>
+        <div class="label">Sparat sedan snusstopp</div>
         <div>
             <span class="ticker" id="savings">0</span>
             <span class="unit">SEK</span>
         </div>
+        <hr>
+        <div class="heart-rate">
+            <span class="heart">❤️</span>
+            <span class="bpm-change" id="savedBeats">0</span><span class="heart-unit">hjärtslag</span>
+        </div>
+        <div class="heart-rate-detail" id="heartDetail">(8 per minut, 0 minuter)</div>
         <div class="start-date">Sedan 20 juli 2025</div>
     </div>
 
@@ -94,6 +157,17 @@
             });
 
             document.getElementById('savings').textContent = formattedAmount;
+
+            const minutesElapsed = secondsElapsed / 60;
+            const savedHeartbeats = Math.floor(minutesElapsed * 8);
+
+            const formattedBeats = savedHeartbeats.toLocaleString('sv-SE');
+
+            document.getElementById('savedBeats').textContent = formattedBeats;
+
+            const totalMinutes = Math.floor(minutesElapsed);
+            const formattedMinutes = totalMinutes.toLocaleString('sv-SE');
+            document.getElementById('heartDetail').textContent = `(8 per minut, ${formattedMinutes} minuter)`;
         }
 
         updateTicker();
