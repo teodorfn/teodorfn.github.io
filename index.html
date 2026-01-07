@@ -187,50 +187,28 @@
 
 <body>
     <div class="container">
-        <div class="label">Saved since July 20, 2025</div>
+        <div class="label">Saved since July 20, 2025 (when I quit snus)</div>
         <div>
             <span class="ticker" id="savings">0</span>
             <span class="unit">SEK</span>
         </div>
-        <hr>
-        <div class="heart-rate">
-            <span class="heart">❤️</span>
-            <span class="bpm-change" id="savedBeats">0</span><span class="heart-unit">heartbeats</span>
-        </div>
-        <div class="heart-rate-detail" id="heartDetail">(-8 beats per minute)</div>
 
         <div class="time-units">
             <div class="time-unit-item">
-                <span class="time-value" id="seconds">0</span>
-                <span class="time-label">seconds since start</span>
-            </div>
-            <div class="time-unit-item">
                 <span class="time-value" id="days">0</span>
                 <span class="time-label">days since start</span>
-            </div>
-            <div class="time-unit-item">
-                <span class="time-value" id="weeks">0</span>
-                <span class="time-label">weeks since start</span>
             </div>
             <div class="time-unit-item">
                 <span class="time-value" id="months">0</span>
                 <span class="time-label">months since start</span>
             </div>
             <div class="time-unit-item">
-                <span class="time-value" id="yearPercent">0%</span>
-                <span class="time-label">of 2025 snus-free</span>
-            </div>
-            <div class="time-unit-item">
-                <span class="time-value" id="dailyAverage">0</span>
-                <span class="time-label">SEK saved per day</span>
-            </div>
-            <div class="time-unit-item">
                 <span class="time-value" id="snusWeight">0</span>
-                <span class="time-label">kg snus not consumed</span>
+                <span class="time-label">kilograms of snus avoided</span>
             </div>
             <div class="time-unit-item">
                 <span class="time-value" id="cansStack">0</span>
-                <span class="time-label">meter tower of cans avoided</span>
+                <span class="time-label">meter tower of snus cans avoided</span>
             </div>
         </div>
     </div>
@@ -246,7 +224,7 @@
 
             const savedAmount = secondsElapsed * amountPerSecond;
 
-            const formattedAmount = savedAmount.toLocaleString('en-US', {
+            const formattedAmount = savedAmount.toLocaleString('se-SV', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
@@ -254,35 +232,13 @@
             document.getElementById('savings').textContent = formattedAmount;
 
             const minutesElapsed = secondsElapsed / 60;
-            const savedHeartbeats = Math.floor(minutesElapsed * 8);
-
-            const formattedBeats = savedHeartbeats.toLocaleString('en-US');
-
-            document.getElementById('savedBeats').textContent = formattedBeats;
-
-            document.getElementById('seconds').textContent = secondsElapsed.toLocaleString('en-US');
 
             const daysTotal = Math.floor(secondsElapsed / 86400);
             document.getElementById('days').textContent = daysTotal.toLocaleString('en-US');
 
-            const weeksTotal = Math.floor(secondsElapsed / 604800);
-            document.getElementById('weeks').textContent = weeksTotal.toLocaleString('en-US');
-
             // Calculate months more accurately
             const monthsTotal = calculateMonthsDifference(startDate, now);
             document.getElementById('months').textContent = monthsTotal.toLocaleString('en-US');
-
-            // Calculate percentage of 2025
-            const yearStart = new Date('2025-01-01');
-            const yearEnd = new Date('2025-12-31T23:59:59');
-            const totalYearMs = yearEnd - yearStart;
-            const elapsedYearMs = now - startDate;
-            const yearPercentage = Math.min(100, (elapsedYearMs / totalYearMs) * 100);
-            document.getElementById('yearPercent').textContent = yearPercentage.toFixed(1) + '%';
-
-            // Calculate daily average
-            const dailyAverage = daysTotal > 0 ? savedAmount / daysTotal : 0;
-            document.getElementById('dailyAverage').textContent = dailyAverage.toFixed(2);
 
             // Calculate snus weight and environmental impact
             // 1 can per day consumption rate
