@@ -125,6 +125,57 @@
             margin-top: 5px;
         }
 
+        .countdown-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown-label {
+            font-size: 1.5rem;
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff9800;
+            display: block;
+        }
+
+        .countdown-unit {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            display: block;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .countdown-value {
+                font-size: 1.5rem;
+            }
+        }
+
         @media (min-width: 481px) and (max-width: 768px) {
             .time-units {
                 grid-template-columns: repeat(2, 1fr);
@@ -211,6 +262,28 @@
                 <span class="time-label">meter tower of snus cans avoided</span>
             </div>
         </div>
+
+        <div class="countdown-section">
+            <div class="countdown-label">Time until I can snus again (July 3, 2055)</div>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdown-years">0</span>
+                    <span class="countdown-unit">years</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdown-months">0</span>
+                    <span class="countdown-unit">months</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdown-days">0</span>
+                    <span class="countdown-unit">days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdown-hours">0</span>
+                    <span class="countdown-unit">hours</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -270,8 +343,49 @@
             return months;
         }
 
+        const snusAgainDate = new Date('2055-07-03T00:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = snusAgainDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown-years').textContent = '0';
+                document.getElementById('countdown-months').textContent = '0';
+                document.getElementById('countdown-days').textContent = '0';
+                document.getElementById('countdown-hours').textContent = '0';
+                return;
+            }
+
+            let years = snusAgainDate.getFullYear() - now.getFullYear();
+            let months = snusAgainDate.getMonth() - now.getMonth();
+            let days = snusAgainDate.getDate() - now.getDate();
+            let hours = snusAgainDate.getHours() - now.getHours();
+
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            if (days < 0) {
+                const prevMonth = new Date(snusAgainDate.getFullYear(), snusAgainDate.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            document.getElementById('countdown-years').textContent = years;
+            document.getElementById('countdown-months').textContent = months;
+            document.getElementById('countdown-days').textContent = days;
+            document.getElementById('countdown-hours').textContent = hours;
+        }
+
         updateTicker();
+        updateCountdown();
         setInterval(updateTicker, 1000);
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 
